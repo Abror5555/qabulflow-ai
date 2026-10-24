@@ -1,0 +1,31 @@
+QabulFlow AI — Proprietary Software License
+
+Copyright (c) 2026 Abror Kushshiyev. All rights reserved.
+
+This software and its associated files, including source code, documentation, database
+migrations, configuration, design assets, screenshots and images (the "Software"), are the
+exclusive property of the copyright holder.
+
+1. No license is granted. Except as expressly permitted in a separate written agreement signed
+   by the copyright holder, no person or entity may use, copy, modify, merge, publish,
+   distribute, sublicense, sell, rent, host as a service, or create derivative works of the
+   Software, in whole or in part.
+
+2. Evaluation access. Persons to whom the copyright holder has intentionally given access to
+   this repository may view the Software and run it locally solely to evaluate it. Evaluation
+   access does not permit production use, redistribution or commercial use.
+
+3. Third-party components. Third-party libraries, packages and fonts used by or bundled with the
+   Software (for example, the Inter font in showcase/fonts/, licensed under the SIL Open Font
+   License 1.1) remain subject to their own licenses. This license does not apply to them.
+
+4. No warranty. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+   PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR
+   ANY CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+   OR ITS USE.
+
+5. Termination. Any use in breach of this license immediately terminates any access granted
+   under section 2.
+
+For licensing or commercial use, contact the copyright holder: abrorkushshiyev@gmail.com

@@ -14,6 +14,33 @@ statistikani boshqaradi.
 Batafsil: [ARCHITECTURE.md](ARCHITECTURE.md) · [METRICS.md](METRICS.md) · [TEST_REPORT.md](TEST_REPORT.md) ·
 API sxemasi: [docs/openapi.yaml](docs/openapi.yaml) (ishlayotgan serverda `/api/docs/`).
 
+## Ko'rinish
+
+Barcha rasmlar ishlayotgan ilovadan sintetik demo ma'lumotlar bilan olingan (`assets/showcase/`).
+
+**Asosiy panel** — KPI kartalari, sparkline va katta chiziqli grafik
+
+![Asosiy panel](assets/showcase/01-dashboard-desktop.png)
+
+**Telegram suhbatdan bron va CRM yozuvigacha** (Telegram qismi — ilovaning demo oqimidan chizilgan maket)
+
+![Telegram orqali bron](assets/showcase/02-telegram-booking.png)
+
+**Suhbatlar va CRM** — mijoz holatlari, operator suhbati va mijoz kartasi
+
+![Suhbatlar va CRM](assets/showcase/03-crm-conversations.png)
+
+**Analitika** — sana va filtrlar, konversiya funneli, manbalar
+
+![Analitika](assets/showcase/04-analytics-detail.png)
+
+**Mobil ko'rinish** — panel va mijoz veb-chati
+
+<p>
+  <img src="assets/showcase/05-instagram-portrait.png" alt="Mobil panel va veb-chat" width="48%">
+  <img src="assets/showcase/06-story-vertical.png" alt="Veb-chat orqali bron" width="27%">
+</p>
+
 ---
 
 ## 1. Talablar
@@ -253,3 +280,9 @@ docker-compose.yml, Makefile, .env.example
   xuddi shu buyruqlar (gunicorn, celery, migrate, collectstatic) Docker'siz tekshirilgan.
 - To'lov tizimi, telefon qo'ng'iroqlari, Instagram DM va SaaS billing doiradan tashqarida.
 - Bilim bazasi qidiruvi PostgreSQL full-text + trigram (vektor qidiruv yo'q); skaner PDF'dan matn olinmaydi (OCR yo'q).
+
+## 12. Litsenziya
+
+Proprietary — barcha huquqlar himoyalangan, © 2026 Abror Kushshiyev. Muallifning yozma ruxsatisiz
+nusxalash, tarqatish, o'zgartirish yoki tijoriy foydalanish mumkin emas. Batafsil: [LICENSE](LICENSE).
+Uchinchi tomon kutubxonalari va Inter shrifti (`showcase/fonts/`, SIL OFL 1.1) o'z litsenziyalari ostida qoladi.

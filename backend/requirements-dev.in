@@ -1,0 +1,9 @@
+# Development / test bog'liqliklari. Runtime paketlari requirements.in'dan, versiyalari requirements.lock bilan bir xil.
+# Lock: uv pip compile requirements-dev.in -o requirements-dev.lock
+-r requirements.in
+-c requirements.lock
+pytest==9.1.1
+pytest-django==4.14.0
+playwright==1.63.0
+ruff==0.17.2
+pillow==13.0.0

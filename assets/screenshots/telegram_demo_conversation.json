@@ -1,0 +1,112 @@
+{
+  "note": "Seed paytida haqiqiy service qatlami (inbound → demo agent → tool → bron) orqali yaratilgan demo suhbat.",
+  "lead": "Aziza",
+  "booking_id": 1330,
+  "messages": [
+    {
+      "sender": "ai",
+      "text": "Assalomu alaykum! Men QabulFlow Demo Academy AI yordamchisiman. Kurslar, narxlar, filiallar va bepul sinov darsiga yozilish bo'yicha yordam beraman.\n\n🔒 Ma'lumotlaringiz faqat sinov darsiga yozish va siz bilan bog'lanish uchun ishlatiladi. Ism va telefon faqat bron bosqichida so'raladi.\n\nQuyidagi tugmalardan foydalaning yoki savolingizni yozing (ovozli xabar ham mumkin).",
+      "created_at": "2026-10-24T14:55:26.409716+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "Assalomu alaykum",
+      "created_at": "2026-10-24T14:55:26.415055+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "Assalomu alaykum! Men QabulFlow Demo Academy AI yordamchisiman. Kurslar, narxlar, filiallar va bepul sinov darsiga yozilish bo'yicha yordam beraman.\n\nQuyidagi tugmalardan foydalaning yoki savolingizni yozing (ovozli xabar ham mumkin).",
+      "created_at": "2026-10-24T14:55:26.434852+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "IELTS kursi narxi qancha?",
+      "created_at": "2026-10-24T14:55:26.447412+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "📚 IELTS Intensive — o'rta\n💳 Narx: 1 200 000 so'm oyiga\n⏱ Davomiyligi: 3 oy, haftasiga 3 dars (90 daqiqa)\n🗓 Guruhlar:\n• Chilonzor filiali: Du, Ch, Ju 09:00–10:30\n• Chilonzor filiali: Se, Pa, Sh 18:00–19:30\n• Yunusobod filiali: Du, Ch, Ju 15:00–16:30\n\nBepul sinov darsiga yozib qo'yaymi?",
+      "created_at": "2026-10-24T14:55:26.471420+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "Ha, sinov darsiga yozilmoqchiman",
+      "created_at": "2026-10-24T14:55:26.479904+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "Qaysi filial sizga qulay?\n1) Chilonzor filiali\n2) Yunusobod filiali",
+      "created_at": "2026-10-24T14:55:26.490758+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "Chilonzor",
+      "created_at": "2026-10-24T14:55:26.499209+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "Qaysi vaqt qulay: ertalab, tushdan keyin yoki kechqurun?",
+      "created_at": "2026-10-24T14:55:26.509898+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "Kechqurun",
+      "created_at": "2026-10-24T14:55:26.517667+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "Bo'sh sinov darslari (IELTS Intensive, Chilonzor filiali):\n1) 24.10 (Sh) 18:00 — 3 ta joy\n2) 27.10 (Se) 18:00 — 4 ta joy\n3) 29.10 (Pa) 18:00 — 4 ta joy\nRaqamini yozing (masalan: 1).",
+      "created_at": "2026-10-24T14:55:26.534412+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "1",
+      "created_at": "2026-10-24T14:55:26.545280+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "Bron uchun ismingizni yozing.",
+      "created_at": "2026-10-24T14:55:26.556296+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "Aziza",
+      "created_at": "2026-10-24T14:55:26.565109+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "Telefon raqamingizni yozing (masalan: +998 90 123 45 67). U faqat sinov darsi bo'yicha bog'lanish uchun.",
+      "created_at": "2026-10-24T14:55:26.576741+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "+998 00 123 45 67",
+      "created_at": "2026-10-24T14:55:26.588083+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "Iltimos, tasdiqlang:\n📚 IELTS Intensive\n📍 Chilonzor filiali, Chilonzor tumani, Bunyodkor ko'chasi, 12 (sintetik manzil)\n🕒 24.10 (Sh) 18:00\n👤 Aziza\n\nYozib qo'yaymi? (Ha / Yo'q)",
+      "created_at": "2026-10-24T14:55:26.602976+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "Ha",
+      "created_at": "2026-10-24T14:55:26.611016+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "✅ Siz sinov darsiga yozildingiz!\n📚 IELTS Intensive\n📍 Chilonzor filiali, Chilonzor tumani, Bunyodkor ko'chasi, 12 (sintetik manzil)\n🕒 24.10 (Sh) 18:00\nBron raqami: #1330\n\nDars oldidan eslatma yuboraylikmi? (Ha / Yo'q)",
+      "created_at": "2026-10-24T14:55:26.653279+05:00"
+    },
+    {
+      "sender": "customer",
+      "text": "Ha",
+      "created_at": "2026-10-24T14:55:26.664173+05:00"
+    },
+    {
+      "sender": "ai",
+      "text": "Yaxshi, dars oldidan eslatma yuboramiz. Yana savolingiz bo'lsa yozing.",
+      "created_at": "2026-10-24T14:55:26.686503+05:00"
+    }
+  ]
+}

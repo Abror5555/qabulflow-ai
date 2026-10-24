@@ -1,0 +1,125 @@
+# QabulFlow AI — lokal ishga tushirish (Docker Desktop / Docker Engine + Compose v2).
+#
+#   python scripts/init_env.py        # .env yaratadi (tasodifiy DJANGO_SECRET_KEY bilan)
+#   docker compose up --build -d      # db -> redis -> migrate(+demo seed) -> web/worker/beat
+#   http://localhost:8000             # panel (demo hisoblar README'da)
+#   docker compose --profile telegram up -d bot   # TELEGRAM_BOT_TOKEN kiritilgandan keyin
+#
+# Servislar tayyor bo'lish tartibi healthcheck va depends_on shartlari bilan boshqariladi.
+
+name: qabulflow
+
+x-app: &app
+  build:
+    context: .
+    dockerfile: backend/Dockerfile
+  image: qabulflow-ai:local
+  env_file: .env
+  environment:
+    DJANGO_ENV: production
+    DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?DJANGO_SECRET_KEY .env faylida bo'lishi kerak (python scripts/init_env.py)}
+    DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-localhost,127.0.0.1}
+    DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-http://localhost:8000,http://127.0.0.1:8000}
+    # Lokal http uchun. HTTPS reverse-proxy ortida: true / true / 31536000
+    DJANGO_SECURE_SSL_REDIRECT: ${DJANGO_SECURE_SSL_REDIRECT:-false}
+    DJANGO_SECURE_COOKIES: ${DJANGO_SECURE_COOKIES:-false}
+    DJANGO_HSTS_SECONDS: ${DJANGO_HSTS_SECONDS:-0}
+    DEMO_MODE: ${DEMO_MODE:-true}
+    POSTGRES_HOST: db
+    POSTGRES_PORT: "5432"
+    REDIS_URL: redis://redis:6379/0
+    CACHE_REDIS_URL: redis://redis:6379/1
+    CELERY_BROKER_URL: redis://redis:6379/0
+    CELERY_RESULT_BACKEND: redis://redis:6379/0
+    USE_LOCMEM_CACHE: "false"
+    CELERY_TASK_ALWAYS_EAGER: "false"
+  volumes:
+    - media:/app/var/media
+  restart: unless-stopped
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-qabulflow}
+      POSTGRES_USER: ${POSTGRES_USER:-qabulflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qabulflow}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  # Bir martalik: migratsiyalar va (DEMO_MODE=true bo'lsa) bo'sh bazaga demo seed
+  migrate:
+    <<: *app
+    command: ["sh", "-c", "python manage.py migrate --noinput && if [ \"$${DEMO_MODE}\" = \"true\" ]; then python manage.py seed_demo --if-empty; fi"]
+    healthcheck:
+      disable: true
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: "no"
+
+  web:
+    <<: *app
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+  worker:
+    <<: *app
+    command: ["celery", "-A", "config", "worker", "-l", "info", "--concurrency", "2"]
+    healthcheck:
+      test: ["CMD-SHELL", "celery -A config inspect ping -d celery@$$HOSTNAME --timeout 5 | grep -q pong"]
+      interval: 30s
+      timeout: 15s
+      retries: 3
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  beat:
+    <<: *app
+    command: ["celery", "-A", "config", "beat", "-l", "info", "--schedule", "/tmp/celerybeat-schedule"]
+    healthcheck:
+      disable: true
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  # Telegram bot (polling). TELEGRAM_BOT_TOKEN bo'lmasa ishga tushmaydi — profile bilan alohida yoqiladi.
+  bot:
+    <<: *app
+    profiles: ["telegram"]
+    command: ["python", "manage.py", "run_telegram_bot"]
+    healthcheck:
+      disable: true
+    depends_on:
+      web:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  media:

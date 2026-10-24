@@ -1,0 +1,6448 @@
+openapi: 3.0.3
+info:
+  title: QabulFlow AI API
+  version: 1.0.0
+  description: O'quv markazlari uchun AI qabul, sotuv va sinov darsiga yozilish tizimi
+    API.
+paths:
+  /api/ai/settings/:
+    get:
+      operationId: ai_settings_retrieve
+      tags:
+      - ai
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AISettings'
+          description: ''
+    put:
+      operationId: ai_settings_update
+      tags:
+      - ai
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AISettingsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AISettingsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AISettingsRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AISettings'
+          description: ''
+    patch:
+      operationId: ai_settings_partial_update
+      tags:
+      - ai
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAISettingsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAISettingsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAISettingsRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AISettings'
+          description: ''
+  /api/ai/test-chat/:
+    get:
+      operationId: ai_test_chat_retrieve
+      description: 'AI sozlamalari sahifasidagi test-chat: haqiqiy bron yaratmaydi
+        (dry-run), statistikaga kirmaydi.'
+      summary: 'AI test-chat (dry-run: bron yaratilmaydi)'
+      tags:
+      - ai
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: ai_test_chat_create
+      description: 'AI sozlamalari sahifasidagi test-chat: haqiqiy bron yaratmaydi
+        (dry-run), statistikaga kirmaydi.'
+      summary: 'AI test-chat (dry-run: bron yaratilmaydi)'
+      tags:
+      - ai
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestChatRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TestChatRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TestChatRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    delete:
+      operationId: ai_test_chat_destroy
+      description: 'AI sozlamalari sahifasidagi test-chat: haqiqiy bron yaratmaydi
+        (dry-run), statistikaga kirmaydi.'
+      summary: 'AI test-chat (dry-run: bron yaratilmaydi)'
+      tags:
+      - ai
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/ai/usage/:
+    get:
+      operationId: ai_usage_retrieve
+      summary: AI chaqiruvlari statistikasi
+      tags:
+      - ai
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/analytics/details/:
+    get:
+      operationId: analytics_details_retrieve
+      description: Grafik nuqtasi/segmentidan filtrlangan tafsilotlar jadvali (drill-down).
+      parameters:
+      - in: query
+        name: branch_id
+        schema:
+          type: integer
+      - in: query
+        name: bucket
+        schema:
+          type: string
+      - in: query
+        name: channel
+        schema:
+          type: string
+      - in: query
+        name: course_id
+        schema:
+          type: integer
+      - in: query
+        name: date_from
+        schema:
+          type: string
+        description: YYYY-MM-DD (tashkilot zonasida)
+      - in: query
+        name: date_to
+        schema:
+          type: string
+        description: YYYY-MM-DD (kiritilgan kun ham kiradi)
+      - in: query
+        name: detail_course_id
+        schema:
+          type: integer
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          enum:
+          - day
+          - week
+      - in: query
+        name: metric
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: source
+        schema:
+          type: string
+      - in: query
+        name: stage
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+      tags:
+      - analytics
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/analytics/export.csv:
+    get:
+      operationId: analytics_export.csv_retrieve
+      description: Panel bilan bir xil service va filtrlar asosida CSV eksport.
+      parameters:
+      - in: query
+        name: branch_id
+        schema:
+          type: integer
+      - in: query
+        name: course_id
+        schema:
+          type: integer
+      - in: query
+        name: date_from
+        schema:
+          type: string
+        description: YYYY-MM-DD (tashkilot zonasida)
+      - in: query
+        name: date_to
+        schema:
+          type: string
+        description: YYYY-MM-DD (kiritilgan kun ham kiradi)
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          enum:
+          - day
+          - week
+      - in: query
+        name: source
+        schema:
+          type: string
+      tags:
+      - analytics
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            text/csv:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/analytics/overview/:
+    get:
+      operationId: analytics_overview_retrieve
+      parameters:
+      - in: query
+        name: branch_id
+        schema:
+          type: integer
+      - in: query
+        name: course_id
+        schema:
+          type: integer
+      - in: query
+        name: date_from
+        schema:
+          type: string
+        description: YYYY-MM-DD (tashkilot zonasida)
+      - in: query
+        name: date_to
+        schema:
+          type: string
+        description: YYYY-MM-DD (kiritilgan kun ham kiradi)
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          enum:
+          - day
+          - week
+      - in: query
+        name: source
+        schema:
+          type: string
+      tags:
+      - analytics
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/attachments/{id}/download/:
+    get:
+      operationId: attachments_download_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      summary: Ovozli xabar faylini yuklab olish (faqat ruxsatli xodim)
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this attachment.
+        required: true
+      tags:
+      - attachments
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+          description: ''
+  /api/auth/change-password/:
+    post:
+      operationId: auth_change_password_create
+      summary: Parolni o'zgartirish
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/csrf/:
+    get:
+      operationId: auth_csrf_retrieve
+      tags:
+      - auth
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Csrf'
+          description: ''
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      summary: Chiqish
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/me/:
+    get:
+      operationId: auth_me_retrieve
+      summary: Joriy foydalanuvchi va tashkilot
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    patch:
+      operationId: auth_me_partial_update
+      summary: Profil/afzalliklarni yangilash
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMeRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/notification-prefs/:
+    patch:
+      operationId: auth_notification_prefs_partial_update
+      summary: Bildirishnoma sozlamalari
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPrefsRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPrefsRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedNotificationPrefsRequestRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/switch-organization/:
+    post:
+      operationId: auth_switch_organization_create
+      summary: Faol tashkilotni almashtirish
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SwitchOrganizationRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SwitchOrganizationRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SwitchOrganizationRequestRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/bookings/:
+    get:
+      operationId: bookings_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: channel
+        schema:
+          type: string
+          enum:
+          - panel
+          - telegram
+          - webchat
+        description: |-
+          * `telegram` - Telegram
+          * `webchat` - Veb-chat
+          * `panel` - Panel
+      - in: query
+        name: lead
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - attended
+          - cancelled
+          - confirmed
+          - no_show
+        description: |-
+          * `confirmed` - Tasdiqlangan
+          * `cancelled` - Bekor qilingan
+          * `attended` - Qatnashdi
+          * `no_show` - Kelmadi
+      tags:
+      - bookings
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTrialBookingList'
+          description: ''
+    post:
+      operationId: bookings_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - bookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBookingRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateBookingRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateBookingRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialBookingDetail'
+          description: ''
+  /api/bookings/{id}/:
+    get:
+      operationId: bookings_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this trial booking.
+        required: true
+      tags:
+      - bookings
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialBookingDetail'
+          description: ''
+  /api/bookings/{id}/attendance/:
+    post:
+      operationId: bookings_attendance_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this trial booking.
+        required: true
+      tags:
+      - bookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttendanceRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AttendanceRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AttendanceRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialBookingDetail'
+          description: ''
+  /api/bookings/{id}/cancel/:
+    post:
+      operationId: bookings_cancel_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this trial booking.
+        required: true
+      tags:
+      - bookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelBookingRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CancelBookingRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CancelBookingRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialBookingDetail'
+          description: ''
+  /api/bookings/{id}/reschedule/:
+    post:
+      operationId: bookings_reschedule_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this trial booking.
+        required: true
+      tags:
+      - bookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RescheduleRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RescheduleRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RescheduleRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialBookingDetail'
+          description: ''
+  /api/branches/:
+    get:
+      operationId: branches_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - branches
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBranchList'
+          description: ''
+    post:
+      operationId: branches_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - branches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BranchRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BranchRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BranchRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+          description: ''
+  /api/branches/{id}/:
+    get:
+      operationId: branches_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this branch.
+        required: true
+      tags:
+      - branches
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+          description: ''
+    put:
+      operationId: branches_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this branch.
+        required: true
+      tags:
+      - branches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BranchRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BranchRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/BranchRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+          description: ''
+    patch:
+      operationId: branches_partial_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this branch.
+        required: true
+      tags:
+      - branches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBranchRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBranchRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBranchRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+          description: ''
+    delete:
+      operationId: branches_destroy
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this branch.
+        required: true
+      tags:
+      - branches
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/conversations/:
+    get:
+      operationId: conversations_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: channel
+        schema:
+          type: string
+          enum:
+          - telegram
+          - test
+          - webchat
+        description: |-
+          * `telegram` - Telegram
+          * `webchat` - Veb-chat
+          * `test` - AI test-chat
+      - in: query
+        name: lead
+        schema:
+          type: integer
+      - in: query
+        name: mode
+        schema:
+          type: string
+          enum:
+          - ai
+          - human
+        description: |-
+          * `ai` - AI javob beradi
+          * `human` - Operator
+      - in: query
+        name: needs_attention
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - closed
+          - open
+        description: |-
+          * `open` - Ochiq
+          * `closed` - Yopilgan
+      tags:
+      - conversations
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedConversationListList'
+          description: ''
+  /api/conversations/{id}/:
+    get:
+      operationId: conversations_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this conversation.
+        required: true
+      tags:
+      - conversations
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationDetail'
+          description: ''
+  /api/conversations/{id}/close/:
+    post:
+      operationId: conversations_close_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this conversation.
+        required: true
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationList'
+          description: ''
+  /api/conversations/{id}/messages/:
+    get:
+      operationId: conversations_messages_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this conversation.
+        required: true
+      tags:
+      - conversations
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationList'
+          description: ''
+  /api/conversations/{id}/reopen/:
+    post:
+      operationId: conversations_reopen_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this conversation.
+        required: true
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationList'
+          description: ''
+  /api/conversations/{id}/reply/:
+    post:
+      operationId: conversations_reply_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this conversation.
+        required: true
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplyRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ReplyRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ReplyRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+          description: ''
+  /api/conversations/{id}/return-to-ai/:
+    post:
+      operationId: conversations_return_to_ai_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this conversation.
+        required: true
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationList'
+          description: ''
+  /api/conversations/{id}/take-over/:
+    post:
+      operationId: conversations_take_over_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this conversation.
+        required: true
+      tags:
+      - conversations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConversationListRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConversationList'
+          description: ''
+  /api/courses/:
+    get:
+      operationId: courses_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - in: query
+        name: level
+        schema:
+          type: string
+          enum:
+          - advanced
+          - all
+          - beginner
+          - intermediate
+        description: |-
+          * `beginner` - Boshlang'ich
+          * `intermediate` - O'rta
+          * `advanced` - Yuqori
+          * `all` - Barcha darajalar
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - courses
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCourseList'
+          description: ''
+    post:
+      operationId: courses_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - courses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CourseRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CourseRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+  /api/courses/{id}/:
+    get:
+      operationId: courses_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this course.
+        required: true
+      tags:
+      - courses
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    put:
+      operationId: courses_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this course.
+        required: true
+      tags:
+      - courses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CourseRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CourseRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CourseRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    patch:
+      operationId: courses_partial_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this course.
+        required: true
+      tags:
+      - courses
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCourseRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCourseRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCourseRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+          description: ''
+    delete:
+      operationId: courses_destroy
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this course.
+        required: true
+      tags:
+      - courses
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/enrollments/:
+    get:
+      operationId: enrollments_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: course
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - cancelled
+          - confirmed
+          - pending
+        description: |-
+          * `pending` - Tasdiq kutilmoqda
+          * `confirmed` - O'qishga yozildi
+          * `cancelled` - Bekor qilingan
+      tags:
+      - enrollments
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEnrollmentList'
+          description: ''
+  /api/enrollments/{id}/cancel/:
+    post:
+      operationId: enrollments_cancel_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this enrollment.
+        required: true
+      tags:
+      - enrollments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollmentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnrollmentRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnrollmentRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+          description: ''
+  /api/groups/:
+    get:
+      operationId: groups_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: branch
+        schema:
+          type: integer
+      - in: query
+        name: course
+        schema:
+          type: integer
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - groups
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedGroupList'
+          description: ''
+    post:
+      operationId: groups_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+  /api/groups/{id}/:
+    get:
+      operationId: groups_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - groups
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+    put:
+      operationId: groups_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+    patch:
+      operationId: groups_partial_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - groups
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedGroupRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+    delete:
+      operationId: groups_destroy
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this group.
+        required: true
+      tags:
+      - groups
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/integrations/ai/check/:
+    post:
+      operationId: integrations_ai_check_create
+      summary: AI provayder kalit/modelini tekshirish
+      tags:
+      - integrations
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/integrations/status/:
+    get:
+      operationId: integrations_status_retrieve
+      summary: Integratsiyalar holati (Telegram, AI, STT, demo rejimi)
+      tags:
+      - integrations
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/integrations/telegram/check/:
+    post:
+      operationId: integrations_telegram_check_create
+      summary: Telegram tokenini tekshirish (getMe)
+      tags:
+      - integrations
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/knowledge/documents/:
+    get:
+      operationId: knowledge_documents_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: file_type
+        schema:
+          type: string
+          enum:
+          - md
+          - pdf
+          - txt
+        description: |-
+          * `pdf` - PDF
+          * `txt` - TXT
+          * `md` - Markdown
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - failed
+          - indexed
+          - no_text
+          - pending
+          - processing
+        description: |-
+          * `pending` - Navbatda
+          * `processing` - Qayta ishlanmoqda
+          * `indexed` - Indekslandi
+          * `no_text` - Matn topilmadi
+          * `failed` - Xato
+      - in: query
+        name: visibility
+        schema:
+          type: string
+          enum:
+          - customer
+          - internal
+        description: |-
+          * `customer` - Mijozlar uchun
+          * `internal` - Faqat xodimlar
+      tags:
+      - knowledge
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedKnowledgeDocumentList'
+          description: ''
+    post:
+      operationId: knowledge_documents_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - knowledge
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeDocument'
+          description: ''
+  /api/knowledge/documents/{id}/:
+    get:
+      operationId: knowledge_documents_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this knowledge document.
+        required: true
+      tags:
+      - knowledge
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeDocument'
+          description: ''
+    put:
+      operationId: knowledge_documents_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this knowledge document.
+        required: true
+      tags:
+      - knowledge
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeDocument'
+          description: ''
+    patch:
+      operationId: knowledge_documents_partial_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this knowledge document.
+        required: true
+      tags:
+      - knowledge
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedKnowledgeDocumentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedKnowledgeDocumentRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedKnowledgeDocumentRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeDocument'
+          description: ''
+    delete:
+      operationId: knowledge_documents_destroy
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this knowledge document.
+        required: true
+      tags:
+      - knowledge
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/knowledge/documents/{id}/chunks/:
+    get:
+      operationId: knowledge_documents_chunks_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this knowledge document.
+        required: true
+      tags:
+      - knowledge
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeDocument'
+          description: ''
+  /api/knowledge/documents/{id}/download/:
+    get:
+      operationId: knowledge_documents_download_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this knowledge document.
+        required: true
+      tags:
+      - knowledge
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeDocument'
+          description: ''
+  /api/knowledge/documents/{id}/reprocess/:
+    post:
+      operationId: knowledge_documents_reprocess_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this knowledge document.
+        required: true
+      tags:
+      - knowledge
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KnowledgeDocumentRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KnowledgeDocument'
+          description: ''
+  /api/knowledge/search/:
+    get:
+      operationId: knowledge_search_retrieve
+      summary: Bilim bazasidan qidirish (q, audience=customer|staff)
+      parameters:
+      - in: query
+        name: audience
+        schema:
+          type: string
+          enum:
+          - customer
+          - staff
+      - in: query
+        name: q
+        schema:
+          type: string
+      tags:
+      - knowledge
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/leads/:
+    get:
+      operationId: leads_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: assigned_to
+        schema:
+          type: string
+      - in: query
+        name: branch
+        schema:
+          type: number
+      - in: query
+        name: course
+        schema:
+          type: number
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: source
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+      tags:
+      - leads
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedLeadListList'
+          description: ''
+    post:
+      operationId: leads_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - leads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadWriteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LeadWriteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LeadWriteRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadWrite'
+          description: ''
+  /api/leads/{id}/:
+    get:
+      operationId: leads_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lead.
+        required: true
+      tags:
+      - leads
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadDetail'
+          description: ''
+    put:
+      operationId: leads_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lead.
+        required: true
+      tags:
+      - leads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadWriteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LeadWriteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LeadWriteRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadWrite'
+          description: ''
+    patch:
+      operationId: leads_partial_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lead.
+        required: true
+      tags:
+      - leads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedLeadWriteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedLeadWriteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedLeadWriteRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadWrite'
+          description: ''
+    delete:
+      operationId: leads_destroy
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lead.
+        required: true
+      tags:
+      - leads
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/leads/{id}/assign/:
+    post:
+      operationId: leads_assign_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lead.
+        required: true
+      tags:
+      - leads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AssignRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AssignRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadList'
+          description: ''
+  /api/leads/{id}/enroll/:
+    post:
+      operationId: leads_enroll_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lead.
+        required: true
+      tags:
+      - leads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnrollRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EnrollRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EnrollRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+          description: ''
+  /api/leads/{id}/notes/:
+    post:
+      operationId: leads_notes_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lead.
+        required: true
+      tags:
+      - leads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadNoteRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LeadNoteRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LeadNoteRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadNote'
+          description: ''
+  /api/leads/{id}/status/:
+    post:
+      operationId: leads_status_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this lead.
+        required: true
+      tags:
+      - leads
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StatusChangeRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadDetail'
+          description: ''
+  /api/leads/kanban/:
+    get:
+      operationId: leads_kanban_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - leads
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadList'
+          description: ''
+  /api/leads/summary/:
+    get:
+      operationId: leads_summary_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - leads
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadList'
+          description: ''
+  /api/notifications/:
+    get:
+      operationId: notifications_list
+      parameters:
+      - in: query
+        name: is_read
+        schema:
+          type: boolean
+      - in: query
+        name: kind
+        schema:
+          type: string
+          enum:
+          - ai_error
+          - booking_cancelled
+          - handoff_requested
+          - new_booking
+          - new_lead
+          - system
+        description: |-
+          * `new_booking` - Yangi bron
+          * `booking_cancelled` - Bron bekor qilindi
+          * `handoff_requested` - Operator so'raldi
+          * `ai_error` - AI xatosi
+          * `new_lead` - Yangi mijoz
+          * `system` - Tizim
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - notifications
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedNotificationList'
+          description: ''
+  /api/notifications/{id}/read/:
+    post:
+      operationId: notifications_read_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this notification.
+        required: true
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/notifications/read-all/:
+    post:
+      operationId: notifications_read_all_create
+      tags:
+      - notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+  /api/organization/:
+    get:
+      operationId: organization_retrieve
+      tags:
+      - organization
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: ''
+    patch:
+      operationId: organization_partial_update
+      tags:
+      - organization
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrganizationRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrganizationRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrganizationRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: ''
+  /api/outbox/:
+    get:
+      operationId: outbox_list
+      description: Tashqi kanallar navbati. DEMO_MODE'da xabarlar shu yerda 'demo'
+        holatida qoladi.
+      parameters:
+      - in: query
+        name: channel
+        schema:
+          type: string
+      - in: query
+        name: kind
+        schema:
+          type: string
+          enum:
+          - reminder
+          - reply
+          - system
+        description: |-
+          * `reply` - Javob
+          * `reminder` - Eslatma
+          * `system` - Tizim
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - demo
+          - failed
+          - queued
+          - sending
+          - sent
+        description: |-
+          * `queued` - Navbatda
+          * `sending` - Yuborilmoqda
+          * `sent` - Yuborildi
+          * `failed` - Xato
+          * `demo` - Demo outbox
+      tags:
+      - outbox
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOutboxList'
+          description: ''
+  /api/public/widget/{public_key}/config/:
+    get:
+      operationId: public_widget_config_retrieve
+      summary: Veb-chat vidjet sozlamalari (public)
+      parameters:
+      - in: path
+        name: public_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - webchat
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/public/widget/{public_key}/language/:
+    post:
+      operationId: public_widget_language_create
+      summary: Veb-chat tilini o'zgartirish
+      parameters:
+      - in: path
+        name: public_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - webchat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WidgetLanguageRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WidgetLanguageRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WidgetLanguageRequestRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/public/widget/{public_key}/messages/:
+    get:
+      operationId: public_widget_messages_retrieve
+      summary: 'Veb-chat xabarlari (GET: after_id; POST: yangi xabar)'
+      parameters:
+      - in: path
+        name: public_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - webchat
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+    post:
+      operationId: public_widget_messages_create
+      summary: 'Veb-chat xabarlari (GET: after_id; POST: yangi xabar)'
+      parameters:
+      - in: path
+        name: public_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - webchat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WidgetMessageRequestRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/public/widget/{public_key}/session/:
+    post:
+      operationId: public_widget_session_create
+      summary: Veb-chat sessiyasi (token) yaratish
+      parameters:
+      - in: path
+        name: public_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - webchat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WidgetSessionRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WidgetSessionRequestRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WidgetSessionRequestRequest'
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/public/widget/{public_key}/voice/:
+    post:
+      operationId: public_widget_voice_create
+      summary: 'Veb-chat ovozli xabari (multipart: audio, language, duration)'
+      parameters:
+      - in: path
+        name: public_key
+        schema:
+          type: string
+        required: true
+      tags:
+      - webchat
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WidgetVoiceRequestRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WidgetVoiceRequestRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/team/:
+    get:
+      operationId: team_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: is_active
+        schema:
+          type: boolean
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - in: query
+        name: role
+        schema:
+          type: string
+          enum:
+          - manager
+          - operator
+          - owner
+        description: |-
+          * `owner` - Egasi
+          * `manager` - Menejer
+          * `operator` - Operator
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - team
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMembershipList'
+          description: ''
+  /api/team/{id}/:
+    get:
+      operationId: team_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this membership.
+        required: true
+      tags:
+      - team
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+          description: ''
+    put:
+      operationId: team_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this membership.
+        required: true
+      tags:
+      - team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MembershipRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MembershipRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+          description: ''
+    patch:
+      operationId: team_partial_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this membership.
+        required: true
+      tags:
+      - team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMembershipRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMembershipRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMembershipRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+          description: ''
+  /api/team/assignable/:
+    get:
+      operationId: team_assignable_retrieve
+      description: Mas'ul biriktirish uchun faol xodimlar (barcha rollar ko'ra oladi).
+      tags:
+      - team
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+          description: ''
+  /api/team/invite/:
+    post:
+      operationId: team_invite_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InviteMemberRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InviteMemberRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InviteMemberRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+          description: ''
+  /api/trial-slots/:
+    get:
+      operationId: trial_slots_list
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: query
+        name: available
+        schema:
+          type: boolean
+      - in: query
+        name: branch
+        schema:
+          type: integer
+      - in: query
+        name: course
+        schema:
+          type: integer
+      - in: query
+        name: date_from
+        schema:
+          type: string
+      - in: query
+        name: date_to
+        schema:
+          type: string
+      - in: query
+        name: group
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - cancelled
+          - open
+        description: |-
+          * `open` - Ochiq
+          * `cancelled` - Bekor qilingan
+      tags:
+      - trial-slots
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTrialSlotList'
+          description: ''
+    post:
+      operationId: trial_slots_create
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      tags:
+      - trial-slots
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrialSlotRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TrialSlotRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TrialSlotRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialSlot'
+          description: ''
+  /api/trial-slots/{id}/:
+    get:
+      operationId: trial_slots_retrieve
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this trial slot.
+        required: true
+      tags:
+      - trial-slots
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialSlot'
+          description: ''
+    put:
+      operationId: trial_slots_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this trial slot.
+        required: true
+      tags:
+      - trial-slots
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrialSlotRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TrialSlotRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TrialSlotRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialSlot'
+          description: ''
+    patch:
+      operationId: trial_slots_partial_update
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this trial slot.
+        required: true
+      tags:
+      - trial-slots
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTrialSlotRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTrialSlotRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTrialSlotRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialSlot'
+          description: ''
+    delete:
+      operationId: trial_slots_destroy
+      description: |-
+        get_queryset'ni har doim request.organization bilan cheklaydi.
+
+        organization_field — modeldagi tashkilot maydoniga yo'l.
+        branch_field — filial cheklovi uchun yo'l (ixtiyoriy).
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this trial slot.
+        required: true
+      tags:
+      - trial-slots
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/trial-slots/calendar/:
+    get:
+      operationId: trial_slots_calendar_retrieve
+      description: 'Kalendar uchun: slotlar + ulardagi bronlar (bekor qilinganlardan
+        tashqari).'
+      tags:
+      - trial-slots
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrialSlot'
+          description: ''
+  /api/trial-slots/generate/:
+    post:
+      operationId: trial_slots_generate_create
+      description: Guruh jadvali asosida keyingi N hafta uchun sinov darsi slotlarini
+        yaratadi (takrorlarsiz).
+      parameters:
+      - in: query
+        name: group
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - cancelled
+          - open
+        description: |-
+          * `open` - Ochiq
+          * `cancelled` - Bekor qilingan
+      tags:
+      - trial-slots
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateSlotsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GenerateSlotsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GenerateSlotsRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedTrialSlotList'
+          description: ''
+  /api/widget/:
+    get:
+      operationId: widget_retrieve
+      tags:
+      - widget
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WidgetSettings'
+          description: ''
+    patch:
+      operationId: widget_partial_update
+      tags:
+      - widget
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWidgetSettingsRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWidgetSettingsRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWidgetSettingsRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WidgetSettings'
+          description: ''
+  /api/widget/rotate-key/:
+    post:
+      operationId: widget_rotate_key_create
+      summary: Vidjet public kalitini yangilash
+      tags:
+      - widget
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    AISettings:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+          description: O'chirilsa, barcha yangi suhbatlar operatorga tushadi
+        greetings: {}
+        enabled_languages: {}
+        tone:
+          $ref: '#/components/schemas/ToneEnum'
+        working_hours:
+          $ref: '#/components/schemas/WorkingHours'
+        handoff_keywords: {}
+        handoff_after_failed_attempts:
+          type: integer
+          maximum: 5
+          minimum: 1
+        handoff_outside_hours_notice:
+          type: boolean
+        ask_phone_before_booking:
+          type: boolean
+        max_slots_to_offer:
+          type: integer
+          maximum: 5
+          minimum: 1
+        reminder_hours_before:
+          type: integer
+          maximum: 48
+          minimum: 1
+        provider:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - provider
+      - updated_at
+      - working_hours
+    AISettingsRequest:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+          description: O'chirilsa, barcha yangi suhbatlar operatorga tushadi
+        greetings: {}
+        enabled_languages: {}
+        tone:
+          $ref: '#/components/schemas/ToneEnum'
+        working_hours:
+          $ref: '#/components/schemas/WorkingHoursRequest'
+        handoff_keywords: {}
+        handoff_after_failed_attempts:
+          type: integer
+          maximum: 5
+          minimum: 1
+        handoff_outside_hours_notice:
+          type: boolean
+        ask_phone_before_booking:
+          type: boolean
+        max_slots_to_offer:
+          type: integer
+          maximum: 5
+          minimum: 1
+        reminder_hours_before:
+          type: integer
+          maximum: 48
+          minimum: 1
+      required:
+      - working_hours
+    AiStatusEnum:
+      enum:
+      - none
+      - ok
+      - failed
+      - skipped_human
+      type: string
+      description: |-
+        * `none` - —
+        * `ok` - Javob berildi
+        * `failed` - AI xatosi
+        * `skipped_human` - Operator rejimi
+    AssignRequest:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          nullable: true
+      required:
+      - user_id
+    Attachment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        kind:
+          $ref: '#/components/schemas/AttachmentKindEnum'
+        content_type:
+          type: string
+          maxLength: 100
+        size_bytes:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        duration_seconds:
+          type: number
+          format: double
+          nullable: true
+        download_url:
+          type: string
+          readOnly: true
+      required:
+      - content_type
+      - download_url
+      - id
+      - size_bytes
+    AttachmentKindEnum:
+      enum:
+      - voice
+      - file
+      type: string
+      description: |-
+        * `voice` - Ovozli xabar
+        * `file` - Fayl
+    AttendanceRequest:
+      type: object
+      properties:
+        attended:
+          type: boolean
+      required:
+      - attended
+    BookingChannelEnum:
+      enum:
+      - telegram
+      - webchat
+      - panel
+      type: string
+      description: |-
+        * `telegram` - Telegram
+        * `webchat` - Veb-chat
+        * `panel` - Panel
+    BookingEvent:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        event_type:
+          $ref: '#/components/schemas/EventTypeEnum'
+        label:
+          type: string
+          readOnly: true
+        actor_type:
+          type: string
+          maxLength: 16
+        actor_name:
+          type: string
+          readOnly: true
+        reason:
+          type: string
+          maxLength: 255
+        occurred_at:
+          type: string
+          format: date-time
+        from_slot_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        to_slot_id:
+          type: integer
+          nullable: true
+          readOnly: true
+      required:
+      - actor_name
+      - event_type
+      - from_slot_id
+      - id
+      - label
+      - to_slot_id
+    BookingStatusEnum:
+      enum:
+      - confirmed
+      - cancelled
+      - attended
+      - no_show
+      type: string
+      description: |-
+        * `confirmed` - Tasdiqlangan
+        * `cancelled` - Bekor qilingan
+        * `attended` - Qatnashdi
+        * `no_show` - Kelmadi
+    Branch:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        address:
+          type: string
+          maxLength: 255
+        landmark:
+          type: string
+          maxLength: 255
+        phone:
+          type: string
+          maxLength: 32
+        is_active:
+          type: boolean
+        groups_count:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - groups_count
+      - id
+      - name
+    BranchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        address:
+          type: string
+          maxLength: 255
+        landmark:
+          type: string
+          maxLength: 255
+        phone:
+          type: string
+          maxLength: 32
+        is_active:
+          type: boolean
+      required:
+      - name
+    CancelBookingRequest:
+      type: object
+      properties:
+        reason:
+          type: string
+          maxLength: 255
+    ChangePasswordRequest:
+      type: object
+      properties:
+        current_password:
+          type: string
+          minLength: 1
+        new_password:
+          type: string
+          minLength: 8
+      required:
+      - current_password
+      - new_password
+    ChangedViaEnum:
+      enum:
+      - ai
+      - operator
+      - system
+      type: string
+      description: |-
+        * `ai` - AI
+        * `operator` - Xodim
+        * `system` - Tizim
+    ConversationChannelEnum:
+      enum:
+      - telegram
+      - webchat
+      - test
+      type: string
+      description: |-
+        * `telegram` - Telegram
+        * `webchat` - Veb-chat
+        * `test` - AI test-chat
+    ConversationDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lead_id:
+          type: integer
+          readOnly: true
+        lead_name:
+          type: string
+          readOnly: true
+        lead_status:
+          type: string
+          readOnly: true
+        lead_status_label:
+          type: string
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/ConversationChannelEnum'
+        channel_label:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/ConversationStatusEnum'
+        mode:
+          $ref: '#/components/schemas/ModeEnum'
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        needs_attention:
+          type: boolean
+        last_message_at:
+          type: string
+          format: date-time
+        last_message_preview:
+          type: string
+          maxLength: 200
+        unanswered:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+        handoffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Handoff'
+          readOnly: true
+        lead:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+        state_summary:
+          type: object
+          additionalProperties: {}
+          readOnly: true
+      required:
+      - assigned_to
+      - channel
+      - channel_label
+      - handoffs
+      - id
+      - lead
+      - lead_id
+      - lead_name
+      - lead_status
+      - lead_status_label
+      - state_summary
+      - unanswered
+    ConversationList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lead_id:
+          type: integer
+          readOnly: true
+        lead_name:
+          type: string
+          readOnly: true
+        lead_status:
+          type: string
+          readOnly: true
+        lead_status_label:
+          type: string
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/ConversationChannelEnum'
+        channel_label:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/ConversationStatusEnum'
+        mode:
+          $ref: '#/components/schemas/ModeEnum'
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        needs_attention:
+          type: boolean
+        last_message_at:
+          type: string
+          format: date-time
+        last_message_preview:
+          type: string
+          maxLength: 200
+        unanswered:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - assigned_to
+      - channel
+      - channel_label
+      - id
+      - lead_id
+      - lead_name
+      - lead_status
+      - lead_status_label
+      - unanswered
+    ConversationListRequest:
+      type: object
+      properties:
+        channel:
+          $ref: '#/components/schemas/ConversationChannelEnum'
+        status:
+          $ref: '#/components/schemas/ConversationStatusEnum'
+        mode:
+          $ref: '#/components/schemas/ModeEnum'
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        needs_attention:
+          type: boolean
+        last_message_at:
+          type: string
+          format: date-time
+        last_message_preview:
+          type: string
+          maxLength: 200
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - channel
+    ConversationStatusEnum:
+      enum:
+      - open
+      - closed
+      type: string
+      description: |-
+        * `open` - Ochiq
+        * `closed` - Yopilgan
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        description:
+          type: string
+        level:
+          $ref: '#/components/schemas/LevelEnum'
+        level_label:
+          type: string
+          readOnly: true
+        teaching_language:
+          type: string
+          maxLength: 32
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        currency:
+          type: string
+          readOnly: true
+        price_period:
+          $ref: '#/components/schemas/PricePeriodEnum'
+        duration_months:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        lessons_per_week:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        lesson_minutes:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        keywords:
+          description: Suhbatda kursni aniqlash uchun kalit so'zlar
+        is_active:
+          type: boolean
+        groups_count:
+          type: integer
+          readOnly: true
+        upcoming_slots:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - currency
+      - groups_count
+      - id
+      - level_label
+      - name
+      - price
+      - upcoming_slots
+      - updated_at
+    CourseRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+        level:
+          $ref: '#/components/schemas/LevelEnum'
+        teaching_language:
+          type: string
+          minLength: 1
+          maxLength: 32
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        price_period:
+          $ref: '#/components/schemas/PricePeriodEnum'
+        duration_months:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        lessons_per_week:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        lesson_minutes:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        keywords:
+          description: Suhbatda kursni aniqlash uchun kalit so'zlar
+        is_active:
+          type: boolean
+      required:
+      - name
+      - price
+    CreateBookingRequest:
+      type: object
+      properties:
+        lead_id:
+          type: integer
+        slot_id:
+          type: integer
+        idempotency_key:
+          type: string
+          maxLength: 128
+        notes:
+          type: string
+          maxLength: 255
+      required:
+      - lead_id
+      - slot_id
+    Csrf:
+      type: object
+      properties:
+        csrfToken:
+          type: string
+      required:
+      - csrfToken
+    DeliveryStatusEnum:
+      enum:
+      - n/a
+      - pending
+      - sent
+      - failed
+      - demo
+      type: string
+      description: |-
+        * `n/a` - —
+        * `pending` - Navbatda
+        * `sent` - Yuborildi
+        * `failed` - Xato
+        * `demo` - Demo outbox
+    EnrollRequest:
+      type: object
+      properties:
+        course_id:
+          type: integer
+        group_id:
+          type: integer
+          nullable: true
+        notes:
+          type: string
+          maxLength: 255
+      required:
+      - course_id
+    Enrollment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lead_id:
+          type: integer
+          readOnly: true
+        lead_name:
+          type: string
+          readOnly: true
+        course_id:
+          type: integer
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        group_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        group_name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/EnrollmentStatusEnum'
+        status_label:
+          type: string
+          readOnly: true
+        confirmed_by:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        confirmed_at:
+          type: string
+          format: date-time
+          nullable: true
+        notes:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - confirmed_by
+      - course_id
+      - course_name
+      - group_id
+      - group_name
+      - id
+      - lead_id
+      - lead_name
+      - status_label
+    EnrollmentRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/EnrollmentStatusEnum'
+        confirmed_at:
+          type: string
+          format: date-time
+          nullable: true
+        notes:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+    EnrollmentStatusEnum:
+      enum:
+      - pending
+      - confirmed
+      - cancelled
+      type: string
+      description: |-
+        * `pending` - Tasdiq kutilmoqda
+        * `confirmed` - O'qishga yozildi
+        * `cancelled` - Bekor qilingan
+    EventTypeEnum:
+      enum:
+      - confirmed
+      - cancelled
+      - rescheduled
+      - attended
+      - no_show
+      type: string
+      description: |-
+        * `confirmed` - Tasdiqlandi
+        * `cancelled` - Bekor qilindi
+        * `rescheduled` - Ko'chirildi
+        * `attended` - Qatnashdi
+        * `no_show` - Kelmadi
+    FileTypeEnum:
+      enum:
+      - pdf
+      - txt
+      - md
+      type: string
+      description: |-
+        * `pdf` - PDF
+        * `txt` - TXT
+        * `md` - Markdown
+    GenerateSlotsRequest:
+      type: object
+      properties:
+        group_id:
+          type: integer
+        weeks:
+          type: integer
+          maximum: 8
+          minimum: 1
+          default: 2
+        capacity:
+          type: integer
+          maximum: 50
+          minimum: 1
+          default: 4
+      required:
+      - group_id
+    Group:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 120
+        course_id:
+          type: integer
+        course_name:
+          type: string
+          readOnly: true
+        branch_id:
+          type: integer
+        branch_name:
+          type: string
+          readOnly: true
+        teacher_name:
+          type: string
+          description: 'Ichki ma''lumot: mijozga ko''rsatilmaydi'
+          maxLength: 120
+        days:
+          description: 'Hafta kunlari: 0=Dushanba ... 6=Yakshanba'
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        schedule_label:
+          type: string
+          readOnly: true
+        capacity:
+          type: integer
+          maximum: 32767
+          minimum: 1
+        enrolled_count:
+          type: integer
+          readOnly: true
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - branch_id
+      - branch_name
+      - course_id
+      - course_name
+      - created_at
+      - end_time
+      - enrolled_count
+      - id
+      - name
+      - schedule_label
+      - start_time
+    GroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        course_id:
+          type: integer
+        branch_id:
+          type: integer
+        teacher_name:
+          type: string
+          description: 'Ichki ma''lumot: mijozga ko''rsatilmaydi'
+          maxLength: 120
+        days:
+          description: 'Hafta kunlari: 0=Dushanba ... 6=Yakshanba'
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        capacity:
+          type: integer
+          maximum: 32767
+          minimum: 1
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        is_active:
+          type: boolean
+      required:
+      - branch_id
+      - course_id
+      - end_time
+      - name
+      - start_time
+    Handoff:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        requested_via:
+          $ref: '#/components/schemas/MessageSenderEnum'
+        reason:
+          type: string
+          maxLength: 255
+        status:
+          $ref: '#/components/schemas/HandoffStatusEnum'
+        taken_by:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        taken_at:
+          type: string
+          format: date-time
+          nullable: true
+        returned_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - requested_via
+      - taken_by
+    HandoffStatusEnum:
+      enum:
+      - requested
+      - active
+      - returned
+      type: string
+      description: |-
+        * `requested` - So'raldi
+        * `active` - Operator suhbatda
+        * `returned` - AI'ga qaytarildi
+    InviteMemberRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          minLength: 1
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        branch_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - email
+      - full_name
+      - password
+      - role
+    KnowledgeDocument:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        file_type:
+          allOf:
+          - $ref: '#/components/schemas/FileTypeEnum'
+          readOnly: true
+        original_filename:
+          type: string
+          readOnly: true
+        size_bytes:
+          type: integer
+          readOnly: true
+        visibility:
+          $ref: '#/components/schemas/VisibilityEnum'
+        visibility_label:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+          - $ref: '#/components/schemas/KnowledgeStatusEnum'
+          readOnly: true
+        status_label:
+          type: string
+          readOnly: true
+        status_message:
+          type: string
+          readOnly: true
+        page_count:
+          type: integer
+          readOnly: true
+        chunk_count:
+          type: integer
+          readOnly: true
+        char_count:
+          type: integer
+          readOnly: true
+        flagged_lines:
+          type: integer
+          readOnly: true
+          description: Ko'rsatmaga o'xshash, mijozga chiqarilmaydigan qatorlar
+        uploaded_by_name:
+          type: string
+          readOnly: true
+        indexed_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - char_count
+      - chunk_count
+      - created_at
+      - file_type
+      - flagged_lines
+      - id
+      - indexed_at
+      - original_filename
+      - page_count
+      - size_bytes
+      - status
+      - status_label
+      - status_message
+      - updated_at
+      - uploaded_by_name
+      - visibility_label
+    KnowledgeDocumentRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+        visibility:
+          $ref: '#/components/schemas/VisibilityEnum'
+      required:
+      - file
+    KnowledgeStatusEnum:
+      enum:
+      - pending
+      - processing
+      - indexed
+      - no_text
+      - failed
+      type: string
+      description: |-
+        * `pending` - Navbatda
+        * `processing` - Qayta ishlanmoqda
+        * `indexed` - Indekslandi
+        * `no_text` - Matn topilmadi
+        * `failed` - Xato
+    LanguageCodeEnum:
+      enum:
+      - uz
+      - ru
+      - en
+      type: string
+      description: |-
+        * `uz` - uz
+        * `ru` - ru
+        * `en` - en
+    LanguageEnum:
+      enum:
+      - uz
+      - ru
+      - en
+      type: string
+      description: |-
+        * `uz` - O'zbekcha
+        * `ru` - Русский
+        * `en` - English
+    LeadBooking:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/BookingStatusEnum'
+        status_label:
+          type: string
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        branch_name:
+          type: string
+          readOnly: true
+        starts_at:
+          type: string
+          format: date-time
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/BookingChannelEnum'
+        confirmed_at:
+          type: string
+          format: date-time
+          description: Birinchi tasdiqlangan vaqt (o'zgarmaydi)
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - branch_name
+      - course_name
+      - id
+      - starts_at
+      - status_label
+    LeadDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        display_name:
+          type: string
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 20
+        phone_verified:
+          type: boolean
+        telegram_username:
+          type: string
+          maxLength: 64
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        source:
+          $ref: '#/components/schemas/SourceEnum'
+        source_label:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/LeadStatusEnum'
+        status_label:
+          type: string
+          readOnly: true
+        branch_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        branch_name:
+          type: string
+          readOnly: true
+        interested_course_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        interested_course_name:
+          type: string
+          readOnly: true
+        goal:
+          type: string
+          maxLength: 255
+        level:
+          type: string
+          maxLength: 64
+        preferred_time:
+          type: string
+          maxLength: 64
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        consent_reminders:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        last_activity_at:
+          type: string
+          format: date-time
+        notes:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadNote'
+          readOnly: true
+        status_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadStatusChange'
+          readOnly: true
+        bookings:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadBooking'
+          readOnly: true
+        enrollments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+          readOnly: true
+        conversations:
+          type: array
+          items:
+            type: object
+            additionalProperties: {}
+          readOnly: true
+        telegram_user_id:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        consent_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - assigned_to
+      - bookings
+      - branch_id
+      - branch_name
+      - conversations
+      - display_name
+      - enrollments
+      - id
+      - interested_course_id
+      - interested_course_name
+      - notes
+      - source_label
+      - status_history
+      - status_label
+    LeadList:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        display_name:
+          type: string
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 20
+        phone_verified:
+          type: boolean
+        telegram_username:
+          type: string
+          maxLength: 64
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        source:
+          $ref: '#/components/schemas/SourceEnum'
+        source_label:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/LeadStatusEnum'
+        status_label:
+          type: string
+          readOnly: true
+        branch_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        branch_name:
+          type: string
+          readOnly: true
+        interested_course_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        interested_course_name:
+          type: string
+          readOnly: true
+        goal:
+          type: string
+          maxLength: 255
+        level:
+          type: string
+          maxLength: 64
+        preferred_time:
+          type: string
+          maxLength: 64
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        consent_reminders:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+        last_activity_at:
+          type: string
+          format: date-time
+      required:
+      - assigned_to
+      - branch_id
+      - branch_name
+      - display_name
+      - id
+      - interested_course_id
+      - interested_course_name
+      - source_label
+      - status_label
+    LeadNote:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        text:
+          type: string
+        author:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - author
+      - created_at
+      - id
+      - text
+    LeadNoteRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+      required:
+      - text
+    LeadStatusChange:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        from_status:
+          type: string
+          maxLength: 20
+        from_label:
+          type: string
+          readOnly: true
+        to_status:
+          type: string
+          maxLength: 20
+        to_label:
+          type: string
+          readOnly: true
+        changed_by:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        changed_via:
+          $ref: '#/components/schemas/ChangedViaEnum'
+        reason:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - changed_by
+      - from_label
+      - id
+      - to_label
+      - to_status
+    LeadStatusEnum:
+      enum:
+      - new
+      - qualified
+      - trial_booked
+      - trial_attended
+      - enrolled
+      - lost
+      type: string
+      description: |-
+        * `new` - Yangi
+        * `qualified` - Ehtiyoj aniqlandi
+        * `trial_booked` - Sinovga yozildi
+        * `trial_attended` - Sinovga keldi
+        * `enrolled` - O'qishga yozildi
+        * `lost` - Yo'qotilgan
+    LeadWrite:
+      type: object
+      properties:
+        full_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 20
+        phone_verified:
+          type: boolean
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        source:
+          $ref: '#/components/schemas/SourceEnum'
+        branch_id:
+          type: integer
+          nullable: true
+        interested_course_id:
+          type: integer
+          nullable: true
+        goal:
+          type: string
+          maxLength: 255
+        level:
+          type: string
+          maxLength: 64
+        preferred_time:
+          type: string
+          maxLength: 64
+        assigned_to_id:
+          type: integer
+          nullable: true
+    LeadWriteRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 20
+        phone_verified:
+          type: boolean
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        source:
+          $ref: '#/components/schemas/SourceEnum'
+        branch_id:
+          type: integer
+          nullable: true
+        interested_course_id:
+          type: integer
+          nullable: true
+        goal:
+          type: string
+          maxLength: 255
+        level:
+          type: string
+          maxLength: 64
+        preferred_time:
+          type: string
+          maxLength: 64
+        assigned_to_id:
+          type: integer
+          nullable: true
+    LevelEnum:
+      enum:
+      - beginner
+      - intermediate
+      - advanced
+      - all
+      type: string
+      description: |-
+        * `beginner` - Boshlang'ich
+        * `intermediate` - O'rta
+        * `advanced` - Yuqori
+        * `all` - Barcha darajalar
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - email
+      - password
+    Membership:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        initials:
+          type: string
+          readOnly: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        is_active:
+          type: boolean
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - email
+      - full_name
+      - id
+      - initials
+      - last_login
+      - user_id
+    MembershipRequest:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        is_active:
+          type: boolean
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        sender:
+          $ref: '#/components/schemas/MessageSenderEnum'
+        author:
+          allOf:
+          - $ref: '#/components/schemas/UserBrief'
+          readOnly: true
+        kind:
+          $ref: '#/components/schemas/MessageKindEnum'
+        text:
+          type: string
+        language:
+          type: string
+          maxLength: 2
+        transcript_status:
+          $ref: '#/components/schemas/TranscriptStatusEnum'
+        transcript_confidence:
+          type: number
+          format: double
+          nullable: true
+        is_demo:
+          type: boolean
+          description: Demo AI javobi yoki demo transkript
+        ai_status:
+          $ref: '#/components/schemas/AiStatusEnum'
+        sources: {}
+        tool_trace: {}
+        delivery_status:
+          $ref: '#/components/schemas/DeliveryStatusEnum'
+        attachments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attachment'
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - attachments
+      - author
+      - id
+      - sender
+    MessageKindEnum:
+      enum:
+      - text
+      - voice
+      - event
+      type: string
+      description: |-
+        * `text` - Matn
+        * `voice` - Ovozli
+        * `event` - Hodisa
+    MessageSenderEnum:
+      enum:
+      - ai
+      - customer
+      - operator
+      - system
+      type: string
+      description: |-
+        * `ai` - AI
+        * `customer` - Mijoz
+        * `operator` - Operator
+        * `system` - Tizim
+    ModeEnum:
+      enum:
+      - ai
+      - human
+      type: string
+      description: |-
+        * `ai` - AI javob beradi
+        * `human` - Operator
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        kind:
+          $ref: '#/components/schemas/NotificationKindEnum'
+        title:
+          type: string
+          maxLength: 160
+        body:
+          type: string
+          maxLength: 500
+        link:
+          type: string
+          maxLength: 200
+        is_read:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - kind
+      - title
+    NotificationKindEnum:
+      enum:
+      - new_booking
+      - booking_cancelled
+      - handoff_requested
+      - ai_error
+      - new_lead
+      - system
+      type: string
+      description: |-
+        * `new_booking` - Yangi bron
+        * `booking_cancelled` - Bron bekor qilindi
+        * `handoff_requested` - Operator so'raldi
+        * `ai_error` - AI xatosi
+        * `new_lead` - Yangi mijoz
+        * `system` - Tizim
+    NotificationRequest:
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/NotificationKindEnum'
+        title:
+          type: string
+          minLength: 1
+          maxLength: 160
+        body:
+          type: string
+          maxLength: 500
+        link:
+          type: string
+          maxLength: 200
+        is_read:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - kind
+      - title
+    Organization:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 150
+        slug:
+          type: string
+          readOnly: true
+          pattern: ^[-a-zA-Z0-9_]+$
+        timezone:
+          type: string
+          maxLength: 64
+        default_language:
+          $ref: '#/components/schemas/LanguageEnum'
+        currency:
+          type: string
+          readOnly: true
+        is_demo:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - currency
+      - id
+      - is_demo
+      - name
+      - slug
+    Outbox:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        channel:
+          type: string
+          maxLength: 16
+        recipient_masked:
+          type: string
+          readOnly: true
+        text:
+          type: string
+        kind:
+          $ref: '#/components/schemas/OutboxKindEnum'
+        status:
+          $ref: '#/components/schemas/OutboxStatusEnum'
+        attempts:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        last_error:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+        sent_at:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+      - channel
+      - id
+      - recipient_masked
+      - text
+    OutboxKindEnum:
+      enum:
+      - reply
+      - reminder
+      - system
+      type: string
+      description: |-
+        * `reply` - Javob
+        * `reminder` - Eslatma
+        * `system` - Tizim
+    OutboxStatusEnum:
+      enum:
+      - queued
+      - sending
+      - sent
+      - failed
+      - demo
+      type: string
+      description: |-
+        * `queued` - Navbatda
+        * `sending` - Yuborilmoqda
+        * `sent` - Yuborildi
+        * `failed` - Xato
+        * `demo` - Demo outbox
+    PaginatedBranchList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Branch'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedConversationListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConversationList'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedCourseList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Course'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedEnrollmentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Enrollment'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedGroupList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedKnowledgeDocumentList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/KnowledgeDocument'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedLeadListList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadList'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedMembershipList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Membership'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedNotificationList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Notification'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedOutboxList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Outbox'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedTrialBookingList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrialBooking'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PaginatedTrialSlotList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrialSlot'
+        page:
+          type: integer
+        page_size:
+          type: integer
+        total_pages:
+          type: integer
+    PatchedAISettingsRequest:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+          description: O'chirilsa, barcha yangi suhbatlar operatorga tushadi
+        greetings: {}
+        enabled_languages: {}
+        tone:
+          $ref: '#/components/schemas/ToneEnum'
+        working_hours:
+          $ref: '#/components/schemas/WorkingHoursRequest'
+        handoff_keywords: {}
+        handoff_after_failed_attempts:
+          type: integer
+          maximum: 5
+          minimum: 1
+        handoff_outside_hours_notice:
+          type: boolean
+        ask_phone_before_booking:
+          type: boolean
+        max_slots_to_offer:
+          type: integer
+          maximum: 5
+          minimum: 1
+        reminder_hours_before:
+          type: integer
+          maximum: 48
+          minimum: 1
+    PatchedBranchRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        address:
+          type: string
+          maxLength: 255
+        landmark:
+          type: string
+          maxLength: 255
+        phone:
+          type: string
+          maxLength: 32
+        is_active:
+          type: boolean
+    PatchedCourseRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        description:
+          type: string
+        level:
+          $ref: '#/components/schemas/LevelEnum'
+        teaching_language:
+          type: string
+          minLength: 1
+          maxLength: 32
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+        price_period:
+          $ref: '#/components/schemas/PricePeriodEnum'
+        duration_months:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        lessons_per_week:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        lesson_minutes:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        keywords:
+          description: Suhbatda kursni aniqlash uchun kalit so'zlar
+        is_active:
+          type: boolean
+    PatchedGroupRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 120
+        course_id:
+          type: integer
+        branch_id:
+          type: integer
+        teacher_name:
+          type: string
+          description: 'Ichki ma''lumot: mijozga ko''rsatilmaydi'
+          maxLength: 120
+        days:
+          description: 'Hafta kunlari: 0=Dushanba ... 6=Yakshanba'
+        start_time:
+          type: string
+          format: time
+        end_time:
+          type: string
+          format: time
+        capacity:
+          type: integer
+          maximum: 32767
+          minimum: 1
+        start_date:
+          type: string
+          format: date
+          nullable: true
+        is_active:
+          type: boolean
+    PatchedKnowledgeDocumentRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 200
+        file:
+          type: string
+          format: binary
+          writeOnly: true
+        visibility:
+          $ref: '#/components/schemas/VisibilityEnum'
+    PatchedLeadWriteRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          maxLength: 150
+        phone:
+          type: string
+          maxLength: 20
+        phone_verified:
+          type: boolean
+        language:
+          $ref: '#/components/schemas/LanguageEnum'
+        source:
+          $ref: '#/components/schemas/SourceEnum'
+        branch_id:
+          type: integer
+          nullable: true
+        interested_course_id:
+          type: integer
+          nullable: true
+        goal:
+          type: string
+          maxLength: 255
+        level:
+          type: string
+          maxLength: 64
+        preferred_time:
+          type: string
+          maxLength: 64
+        assigned_to_id:
+          type: integer
+          nullable: true
+    PatchedMeRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        preferences:
+          type: object
+          additionalProperties: {}
+    PatchedMembershipRequest:
+      type: object
+      properties:
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        branch_ids:
+          type: array
+          items:
+            type: integer
+        is_active:
+          type: boolean
+    PatchedNotificationPrefsRequestRequest:
+      type: object
+      properties:
+        new_booking:
+          type: boolean
+        booking_cancelled:
+          type: boolean
+        handoff_requested:
+          type: boolean
+        ai_error:
+          type: boolean
+        new_lead:
+          type: boolean
+    PatchedOrganizationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 150
+        timezone:
+          type: string
+          minLength: 1
+          maxLength: 64
+        default_language:
+          $ref: '#/components/schemas/LanguageEnum'
+    PatchedTrialSlotRequest:
+      type: object
+      properties:
+        group_id:
+          type: integer
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        capacity:
+          type: integer
+          maximum: 32767
+          minimum: 1
+        status:
+          $ref: '#/components/schemas/SlotStatusEnum'
+        notes:
+          type: string
+          maxLength: 255
+    PatchedWidgetSettingsRequest:
+      type: object
+      properties:
+        is_enabled:
+          type: boolean
+        allowed_origins:
+          description: Vidjet joylashtirilishi mumkin bo'lgan saytlar
+        title:
+          type: string
+          minLength: 1
+          maxLength: 80
+        accent_color:
+          type: string
+          minLength: 1
+          maxLength: 7
+        position:
+          $ref: '#/components/schemas/PositionEnum'
+    PositionEnum:
+      enum:
+      - right
+      - left
+      type: string
+      description: |-
+        * `right` - O'ng
+        * `left` - Chap
+    PricePeriodEnum:
+      enum:
+      - month
+      - course
+      type: string
+      description: |-
+        * `month` - oyiga
+        * `course` - kurs uchun
+    ReplyRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 4000
+      required:
+      - text
+    RescheduleRequest:
+      type: object
+      properties:
+        slot_id:
+          type: integer
+      required:
+      - slot_id
+    RoleEnum:
+      enum:
+      - owner
+      - manager
+      - operator
+      type: string
+      description: |-
+        * `owner` - Egasi
+        * `manager` - Menejer
+        * `operator` - Operator
+    SlotStatusEnum:
+      enum:
+      - open
+      - cancelled
+      type: string
+      description: |-
+        * `open` - Ochiq
+        * `cancelled` - Bekor qilingan
+    SourceEnum:
+      enum:
+      - telegram
+      - webchat
+      - manual
+      - referral
+      - walk_in
+      type: string
+      description: |-
+        * `telegram` - Telegram
+        * `webchat` - Veb-chat
+        * `manual` - Qo'lda
+        * `referral` - Tavsiya
+        * `walk_in` - Tashrif
+    StatusChangeRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/LeadStatusEnum'
+        reason:
+          type: string
+          maxLength: 255
+      required:
+      - status
+    SwitchOrganizationRequestRequest:
+      type: object
+      properties:
+        organization_id:
+          type: integer
+      required:
+      - organization_id
+    TestChatRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        language:
+          $ref: '#/components/schemas/LanguageCodeEnum'
+      required:
+      - text
+    ToneEnum:
+      enum:
+      - friendly
+      - formal
+      type: string
+      description: |-
+        * `friendly` - Samimiy
+        * `formal` - Rasmiy
+    TranscriptStatusEnum:
+      enum:
+      - none
+      - ok
+      - low_confidence
+      - failed
+      - rejected
+      type: string
+      description: |-
+        * `none` - —
+        * `ok` - Aniq
+        * `low_confidence` - Noaniq
+        * `failed` - Xato
+        * `rejected` - Rad etildi
+    TrialBooking:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lead_id:
+          type: integer
+          readOnly: true
+        lead_name:
+          type: string
+          readOnly: true
+        lead_phone:
+          type: string
+          readOnly: true
+        slot_id:
+          type: integer
+          readOnly: true
+        starts_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ends_at:
+          type: string
+          format: date-time
+          readOnly: true
+        course_id:
+          type: integer
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        group_name:
+          type: string
+          readOnly: true
+        branch_id:
+          type: integer
+          readOnly: true
+        branch_name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/BookingStatusEnum'
+        status_label:
+          type: string
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/BookingChannelEnum'
+        channel_label:
+          type: string
+          readOnly: true
+        conversation_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        confirmed_at:
+          type: string
+          format: date-time
+          description: Birinchi tasdiqlangan vaqt (o'zgarmaydi)
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancel_reason:
+          type: string
+          maxLength: 255
+        attendance_marked_at:
+          type: string
+          format: date-time
+          nullable: true
+        reschedule_count:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        created_by_name:
+          type: string
+          readOnly: true
+        notes:
+          type: string
+          maxLength: 255
+        can_mark_attendance:
+          type: boolean
+          readOnly: true
+      required:
+      - branch_id
+      - branch_name
+      - can_mark_attendance
+      - channel_label
+      - conversation_id
+      - course_id
+      - course_name
+      - created_by_name
+      - ends_at
+      - group_name
+      - id
+      - lead_id
+      - lead_name
+      - lead_phone
+      - slot_id
+      - starts_at
+      - status_label
+    TrialBookingDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        lead_id:
+          type: integer
+          readOnly: true
+        lead_name:
+          type: string
+          readOnly: true
+        lead_phone:
+          type: string
+          readOnly: true
+        slot_id:
+          type: integer
+          readOnly: true
+        starts_at:
+          type: string
+          format: date-time
+          readOnly: true
+        ends_at:
+          type: string
+          format: date-time
+          readOnly: true
+        course_id:
+          type: integer
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        group_name:
+          type: string
+          readOnly: true
+        branch_id:
+          type: integer
+          readOnly: true
+        branch_name:
+          type: string
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/BookingStatusEnum'
+        status_label:
+          type: string
+          readOnly: true
+        channel:
+          $ref: '#/components/schemas/BookingChannelEnum'
+        channel_label:
+          type: string
+          readOnly: true
+        conversation_id:
+          type: integer
+          nullable: true
+          readOnly: true
+        confirmed_at:
+          type: string
+          format: date-time
+          description: Birinchi tasdiqlangan vaqt (o'zgarmaydi)
+        cancelled_at:
+          type: string
+          format: date-time
+          nullable: true
+        cancel_reason:
+          type: string
+          maxLength: 255
+        attendance_marked_at:
+          type: string
+          format: date-time
+          nullable: true
+        reschedule_count:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        created_by_name:
+          type: string
+          readOnly: true
+        notes:
+          type: string
+          maxLength: 255
+        can_mark_attendance:
+          type: boolean
+          readOnly: true
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/BookingEvent'
+          readOnly: true
+      required:
+      - branch_id
+      - branch_name
+      - can_mark_attendance
+      - channel_label
+      - conversation_id
+      - course_id
+      - course_name
+      - created_by_name
+      - ends_at
+      - events
+      - group_name
+      - id
+      - lead_id
+      - lead_name
+      - lead_phone
+      - slot_id
+      - starts_at
+      - status_label
+    TrialSlot:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        group_id:
+          type: integer
+        group_name:
+          type: string
+          readOnly: true
+        course_id:
+          type: integer
+          readOnly: true
+        course_name:
+          type: string
+          readOnly: true
+        branch_id:
+          type: integer
+          readOnly: true
+        branch_name:
+          type: string
+          readOnly: true
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        capacity:
+          type: integer
+          maximum: 32767
+          minimum: 1
+        seats_taken:
+          type: integer
+          readOnly: true
+        seats_left:
+          type: integer
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/SlotStatusEnum'
+        notes:
+          type: string
+          maxLength: 255
+        is_past:
+          type: boolean
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - branch_id
+      - branch_name
+      - course_id
+      - course_name
+      - created_at
+      - ends_at
+      - group_id
+      - group_name
+      - id
+      - is_past
+      - seats_left
+      - seats_taken
+      - starts_at
+    TrialSlotRequest:
+      type: object
+      properties:
+        group_id:
+          type: integer
+        starts_at:
+          type: string
+          format: date-time
+        ends_at:
+          type: string
+          format: date-time
+        capacity:
+          type: integer
+          maximum: 32767
+          minimum: 1
+        status:
+          $ref: '#/components/schemas/SlotStatusEnum'
+        notes:
+          type: string
+          maxLength: 255
+      required:
+      - ends_at
+      - group_id
+      - starts_at
+    UserBrief:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 150
+        initials:
+          type: string
+          readOnly: true
+      required:
+      - full_name
+      - id
+      - initials
+    UserBriefRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 150
+      required:
+      - full_name
+    VisibilityEnum:
+      enum:
+      - customer
+      - internal
+      type: string
+      description: |-
+        * `customer` - Mijozlar uchun
+        * `internal` - Faqat xodimlar
+    WidgetLanguageRequestRequest:
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/LanguageCodeEnum'
+      required:
+      - language
+    WidgetMessageRequestRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+        language:
+          $ref: '#/components/schemas/LanguageCodeEnum'
+        client_message_id:
+          type: string
+          minLength: 1
+      required:
+      - text
+    WidgetSessionRequestRequest:
+      type: object
+      properties:
+        token:
+          type: string
+          minLength: 1
+    WidgetSettings:
+      type: object
+      properties:
+        public_key:
+          type: string
+          readOnly: true
+        is_enabled:
+          type: boolean
+        allowed_origins:
+          description: Vidjet joylashtirilishi mumkin bo'lgan saytlar
+        title:
+          type: string
+          maxLength: 80
+        accent_color:
+          type: string
+          maxLength: 7
+        position:
+          $ref: '#/components/schemas/PositionEnum'
+        embed_code:
+          type: string
+          readOnly: true
+        chat_url:
+          type: string
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - chat_url
+      - embed_code
+      - public_key
+      - updated_at
+    WidgetVoiceRequestRequest:
+      type: object
+      properties:
+        audio:
+          type: string
+          format: binary
+        language:
+          type: string
+          minLength: 1
+        duration:
+          type: number
+          format: double
+      required:
+      - audio
+    WorkingHours:
+      type: object
+      properties:
+        start:
+          type: string
+          pattern: ^([01]\d|2[0-3]):[0-5]\d$
+        end:
+          type: string
+          pattern: ^([01]\d|2[0-3]):[0-5]\d$
+        days:
+          type: array
+          items:
+            type: integer
+            maximum: 6
+            minimum: 0
+      required:
+      - days
+      - end
+      - start
+    WorkingHoursRequest:
+      type: object
+      properties:
+        start:
+          type: string
+          minLength: 1
+          pattern: ^([01]\d|2[0-3]):[0-5]\d$
+        end:
+          type: string
+          minLength: 1
+          pattern: ^([01]\d|2[0-3]):[0-5]\d$
+        days:
+          type: array
+          items:
+            type: integer
+            maximum: 6
+            minimum: 0
+      required:
+      - days
+      - end
+      - start
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

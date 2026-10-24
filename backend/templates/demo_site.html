@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ org.name }} — demo sayt</title>
+  <style>
+    :root { --bg:#F6F8FC; --card:#fff; --text:#0F172A; --muted:#64748B; --line:#E6EAF2; --accent:{{ widget.accent_color }}; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); }
+    header { background:#fff; border-bottom:1px solid var(--line); }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+    nav { display:flex; align-items:center; justify-content:space-between; height:64px; }
+    .logo { font-weight:700; }
+    .badge { font-size:12px; padding:4px 8px; border-radius:999px; background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; }
+    .hero { padding:56px 0 32px; }
+    h1 { font-size: clamp(28px, 4vw, 40px); margin:0 0 12px; letter-spacing:-0.02em; }
+    p.lead { color: var(--muted); max-width: 620px; line-height:1.6; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin:32px 0 64px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:20px; }
+    .card h3 { margin:0 0 8px; font-size:16px; }
+    .card p { margin:0; color:var(--muted); font-size:14px; line-height:1.5; }
+    footer { color: var(--muted); font-size: 13px; padding: 24px 0 96px; }
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><nav><span class="logo">{{ org.name }}</span><span class="badge">Demo sayt · sintetik ma'lumotlar</span></nav></div></header>
+  <main class="wrap">
+    <section class="hero">
+      <h1>O'quv markazi sayti namunasi</h1>
+      <p class="lead">Bu sahifa QabulFlow AI veb-chat vidjeti saytga qanday joylashishini ko'rsatadi. O'ng pastdagi tugmani bosing va kurslar, narxlar yoki bepul sinov darsi haqida yozing.</p>
+    </section>
+    <section class="grid" aria-label="Kurslar">
+      {% for course in org.courses.all %}{% if course.is_active %}
+      <article class="card"><h3>{{ course.name }}</h3><p>{{ course.description|truncatechars:120 }}</p></article>
+      {% endif %}{% endfor %}
+    </section>
+  </main>
+  <footer class="wrap">Vidjet kodi: <code>&lt;script src="/widget.js" data-key="…"&gt;&lt;/script&gt;</code></footer>
+  <script src="/widget.js" data-key="{{ widget.public_key }}" async></script>
+</body>
+</html>

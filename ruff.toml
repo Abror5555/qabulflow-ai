@@ -1,0 +1,16 @@
+line-length = 160
+target-version = "py312"
+extend-exclude = ["*/migrations/*", "frontend/node_modules", "var"]
+
+[lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "BLE"]
+ignore = ["S110", "S101", "S311", "S105", "S106", "B008", "E501", "S603", "S607", "B904", "S108"]
+
+[lint.isort]
+known-first-party = ["apps", "config"]
+
+[lint.per-file-ignores]
+"backend/tests/*" = ["S", "B", "BLE"]
+"e2e/*" = ["S", "B", "BLE"]
+"showcase/*" = ["S"]
+"backend/apps/core/management/commands/seed_demo.py" = ["S"]

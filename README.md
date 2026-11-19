@@ -283,6 +283,6 @@ docker-compose.yml, Makefile, .env.example
 
 ## 12. Litsenziya
 
-Proprietary — barcha huquqlar himoyalangan, © 2026 Abror Kushshiyev. Muallifning yozma ruxsatisiz
-nusxalash, tarqatish, o'zgartirish yoki tijoriy foydalanish mumkin emas. Batafsil: [LICENSE](LICENSE).
+MIT — © 2026 Abror Kushshiyev. Kodni bepul ishlatish, o'zgartirish va tarqatish mumkin; mualliflik
+eslatmasi va litsenziya matni saqlanishi shart. Batafsil: [LICENSE](LICENSE).
 Uchinchi tomon kutubxonalari va Inter shrifti (`showcase/fonts/`, SIL OFL 1.1) o'z litsenziyalari ostida qoladi.
